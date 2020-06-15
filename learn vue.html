@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>{{ message }}</p>
+        <button v-on:click="reverseMesssage">メッセージ反転</button>
+
+        <!-- <p>{{ message }}</p> と全く同じ -->
+        <p><a v-text="message"></a></p>
+
+        <!-- thisによる書き換えを行いたいくない時 v-once -->
+        <p v-once>this等によって書き換えを行いたいくない時v-once<br>{{ message }}</p>
+
+
+        <p>{{ ok ? 'yes' : 'no' }}</p>
+        <!-- <p>{{ sayHi() }}</p> -->
+
+        <!-- html要素として読み込み -->
+        <!--  クロスサイトスクリプトの脆弱性 -->
+        <!-- ユーザーが入力するコンテンツには使わない -->
+        <div>{{ html }}</div>
+        <div v-html="html">{{ html }}</div>
+
+        <!-- v-bind -->
+        <a v-bind:href="url">google</a>
+        <!-- v-bind 省略も可能 -->
+        <a :href="url" :id="message">google</a>
+        <a :href="url" :id="number">google</a>
+        <a :[attribute]="url">google</a>
+        <!-- objectで属性をまとめる -->
+        <a v-bind="{href: url, id: number}">twitter</a>
+        <a v-bind="twitterObject">twitter</a>
+
+        <!-- v-on DOMイベント発生時 -->
+        <p>clicked number: {{ vOnNumber }}</p>
+        <button v-on:click="countUp">count up</button>
+        <!-- computed property -->
+        <p>{{ lessThanThree }}</p>
+
+        <!-- イベントオブジェクト イベントした時の全ての情報が入ったオブジェクト-->
+        <p v-on:mousemove="mousePosition">move mouse here</p>
+        <p>X:{{ mousePositionX }}, Y:{{ mousePositionY }}</p>
+
+        <!-- 引数 -->
+        <p>clicked number: {{ vOnNumber2 }}</p>
+        <button v-on:click="countUp2(2)">count up</button>
+        <!-- 引数2 $eventの場所はどこでもOK-->
+        <!-- stopPropagation イベント名のあとに.stopつけるだけ -->
+        <p v-on:mousemove="mousePosition2(3, $event)">move mouse here 
+            <span v-on:mousemove="noEvent">but no event here </span>
+            <span v-on:mousemove.stop="">but no event here</span>
+        </p>
+        <p>X:{{ mousePositionX2 }}, Y:{{ mousePositionY2 }}</p>
+
+        <!-- preventDefault aタグのページ遷移などのデフォルトの機能を無効化する -->
+        <p><a v-on:click="noJump" :href="url">google</a></p>
+        <p><a v-on:click.prevent :href="url">google</a></p>
+
+        <!-- キー修飾子　キーボードに対するDOMイベント Enter&spaceKeyのみに適用-->
+        <input type="text" v-on:keyup.enter.space="myAlert">
+        <!-- v-bindと同じように、v-onの引数を[]を使って表現 -->
+        <p>clicked number: {{ vOnNumber3 }}</p>
+        <button @[clickevent]="countUp3">count up</button>
+        <!-- <button v-on:[clickevent]="countUp3">count up</button> -->
+        <!-- <button @click="countUp3">count up</button> -->
+
+        <!-- classをリストで表現 -->
+        <p :class="[textColor, bgColor]">class expressed by list</p>
+
+        <!-- css styleをobjectで表現 -->
+        <p :style="{color: textColor, 'background-color': bgColor}">css style expressed by object</p>
+        <p :style="styleObject">css style expressed by object</p>
+        <p :style="[styleObject, fontStyle]">css style expressed by object</p>
+
+        <!-- v-if -->
+        <p v-if="ok">OK</p>
+        <p v-else-if="mayok">maybe OK</p>
+        <p v-else>not ok</p>
+        <template v-if="ok">
+            <p>good morning</p>
+            <p>good afternoon</p>
+            <p>good evening</p>
+        </template>
+        <button @click="ok = !ok">ボタン</button>
+
+        <!-- v-show -->
+        <p v-show="ok">
+            v-showはCSSでdisplay noneにしている＝要素として現れないtemplateタグには使えない
+            <br>またv−elseがない
+            <br>全部描画してからdisplay noneなので初期描画が遅い
+            <br>v-ifは要素削除なのでページ更新が多いときには不向き
+        </p>
+
+        <!-- v-for -->
+        <!-- inはofでも可能 -->
+        <ul>
+            <li v-for="i in fruits">{{ i }}</li>
+        </ul>
+        <!-- index番号もとれる -->
+        <ul>
+            <li v-for="(i, index) in fruits">{{ index }}:{{ i }}</li>
+        </ul>
+        <!-- objectのレンダリング -->
+        <ul>
+            <li v-for="value in vForObject">{{ value }}</li>
+        </ul>
+        <ul>
+            <li v-for="(value, key, index) in vForObject">{{ index }} - {{ key }}:{{ value }}</li>
+        </ul>
+        <!-- templateを使う -->
+        <ul>
+            <template v-for="i in fruits">
+                <li>{{ i }}</li>
+                <hr>
+            </template>
+        </ul>
+        <!-- 整数を使う -->
+        <ul>
+            <li v-for="n in 10">{{ n }}</li>
+        </ul>
+        <!-- key -->
+        <p>v-forでは必ずkey属性を使う<br>indexはkeyにしない</p>
+        <ul>
+            <div v-for="i in fruits">
+                <li>{{ i }}</li>
+                <hr>
+                <input type="text">
+            </div>
+        </ul>
+        <button @click="remove">remove first</button>
+        <ul>
+            <div v-for="(i, index) in fruits" :key="i">
+                <li>{{ index}} - {{ i }}</li>
+                <hr>
+                <input type="text">
+            </div>
+        </ul>
+        <button @click="remove">remove first</button>
+
+        <!-- // 中側からインスタンスにアクセスするとき -->
+        <p>{{ myData }}</p>
+
+
+        <p>{{ message }}</p>
+
+        <!-- component -->
+        <!-- <p>this is {{message}}! {{ number }}<button @click="increment">+1</button></p>　が　helloタグに入ってくる -->
+        <!-- componentではdataをfunctionで設定しないと下記のボタンどれか1つを押したら全ての数字が一度に＋1されてしまう -->
+        <global-component></global-component>
+        <global-component></global-component>
+        <global-component></global-component>
+
+    </div>
+    
+    <!-- 別インスタンス -->
+    <!-- 別インスタンスへのアクセスはあまりやらない -->
+    <div id="app2">
+        <p v-text="message"></p>
+        <button @click="changeMessage1">change instance1 message</button>
+    </div>
+    
+    <!-- DOMの他の表現方法・あまり使われないtemplateプロパティ -->
+    <div id="app3">
+    </div>
+
+    <!-- DOMの他の表現方法・render関数 -->
+    <div id="app4">
+    </div>
+
+    <!-- global component -->
+    <!-- <p>this is {{message}}! {{ number }}<button @click="increment">+1</button></p>　が　helloタグに入ってくる -->
+    <!-- componentではdataをfunctionで設定しないと下記のボタンどれか1つを押したら全ての数字が一度に＋1されてしまう -->
+    <div id="app5">
+        <global-component></global-component>
+    </div>
+
+    <!-- local component -->
+    <div id="app6">
+        <local-component></local-component>
+    </div>
+
+
+    <script src="learnVue.js"></script>
+</body>
+</html>
