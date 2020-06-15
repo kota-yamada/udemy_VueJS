@@ -3,7 +3,7 @@ import App from './App.vue'
 
 // global component
 // import
-import LikeNumber from "./LikeNumber.vue"
+import LikeNumber from "./components/LikeNumber.vue"
 
 Vue.config.productionTip = false
 
