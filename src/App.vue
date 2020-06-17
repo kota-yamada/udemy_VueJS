@@ -1,7 +1,41 @@
 <template>
   <div>
-    <LikeHeader></LikeHeader>
-    <h2>{{ number }}</h2>
+    <!-- 親コンポーネントにて、データが受け渡し先の子コンポーネントのタグに何も書かれていない時（templateも書かれていないと判断される）は<br>子コンポーネント内のスロット内に書いた文章がデフォルト文章として表示される -->
+    <LikeHeader header-text="hello"></LikeHeader>
+
+    <p>templateタグはslotに何も記載していないと判断されるため、slotのデフォルメテキストが表示される↓</p>
+
+    <LikeHeader>
+      <!-- 複数のslotを用意し、それぞれに任意のデータを渡したい時は親コンポーネントにてtemplateタグを作り、v-slotディレクティブを設定し、v-slotで指定したものをslotタグのname属性に指定する。 -->
+      
+      <template v-slot:anyNameYouWant>
+        <p>templateタグ内↓</p>
+        <p>v-slotを設定したslot1↓</p>
+        複数のslotを用意し、それぞれに任意のデータを渡したい時は親コンポーネントにてtemplateタグを作り、<br>v-slotディレクティブを設定し、v-slotで指定したものをslotタグのname属性に指定する。
+        <p>v-slotを設定したslot1↑</p>
+        <p>templateタグ内↑</p>
+      </template>
+
+      <template v-slot:anyNumber>
+        <p>templateタグ内↓</p>
+        <p>v-slotを設定したslot2↓</p>
+        <p>{{number}}</p>
+        <p>v-slotを設定したslot2↑</p>
+        <p>templateタグ内↑</p>
+      </template>
+    </LikeHeader>
+
+    <LikeHeader header-text="hello">
+      <!-- 親コンポーネントから子にHTMLテンプレート毎データを渡す時は渡す子タグ内に内容を通常通り書く -->
+      <!-- 何も書かないslotは親コンポーネント内でtemplateで囲われていない部分が入る -->
+      <!-- templateで囲われていない部分がv-slot:defaultとして自動的に設定され、何も書かないslotのnameにdefaultが設定される -->
+      <!-- templateで囲われていない↓この部分がdefaultになる -->
+      <p>v-slot:defaultのslot↓</p>
+      <h1>total like number</h1>
+      <h2>{{ number }}</h2>
+      <p>v-slot:defaultのslot↑</p>
+    </LikeHeader>
+
     <!-- 親コンポーネントから子にデータを渡すときは子でpropsで定義したプロパティを属性名として親に書く -->
     <!-- DOMテンプレートではケバブケースでかく ここでもtotal-numberなどケバブが好ましい-->
     <!-- 子から親コンポーネントにデータを渡す時は受け取り役のv-onディレクティブと受け取りメソッドを親に書く。-->
