@@ -17,11 +17,20 @@
         <!-- templateで囲われていない部分がv-slot:defaultの名前付きslotが自動的に設定され、何も書かないslotのnameにdefaultが設定される -->
         <!-- <p>何も書かないslot↓</p> -->
         <slot></slot>
+
+        <slot :slotPropertyText="user"></slot>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['headerText']
+    props: ['headerText'],
+    data() {
+        return {
+            user: {
+                slotPropertyText: 'text for slot property',
+            }
+        }
+    }
 };
 </script>

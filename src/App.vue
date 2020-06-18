@@ -1,5 +1,18 @@
 <template>
   <div>
+    <!-- 動的コンポーネントの切り替え -->
+    <button @click="currentComponent = 'Home'">Home</button>
+    <button @click="currentComponent = 'About'">About</button>
+    <!-- <p>動的コンポーネントは毎回インスタンスがdestroyed状態、コンポーネントが再生性されている。キャッシュが残らないタブ移動した時とかinputタグの内容とか全部飛ぶ</p>
+    <p>キャッシュを残すためにはcomponentタグをkeep-aliveタグで囲む</p> -->
+    <!-- keep-aliveを使うと新たに2つのライフサイクルイベントが使用可能になる。deactivated()とactivated() -->
+    <keep-alive>
+      <!-- 親コンポーネントにでdataとcomponentタグを用意し、:is属性にdataを渡す -->
+      <component :is="currentComponent"></component>
+    </keep-alive>
+    <!-- <Home v-if="currentComponent === 'Home'"></Home>
+    <About v-if="currentComponent === 'About'"></About> -->
+
     <!-- 親コンポーネントにて、データが受け渡し先の子コンポーネントのタグに何も書かれていない時（templateも書かれていないと判断される）は<br>子コンポーネント内のスロット内に書いた文章がデフォルト文章として表示される -->
     <LikeHeader header-text="hello"></LikeHeader>
 
@@ -7,7 +20,7 @@
 
     <LikeHeader>
       <!-- 複数のslotを用意し、それぞれに任意のデータを渡したい時は親コンポーネントにてtemplateタグを作り、v-slotディレクティブを設定し、v-slotで指定したものをslotタグのname属性に指定する。 -->
-      
+
       <template v-slot:anyNameYouWant>
         <p>templateタグ内↓</p>
         <p>v-slotを設定したslot1↓</p>
@@ -16,7 +29,9 @@
         <p>templateタグ内↑</p>
       </template>
 
-      <template v-slot:anyNumber>
+
+      <!-- v-slot:は#で書き換えられる -->
+      <template #anyNumber>
         <p>templateタグ内↓</p>
         <p>v-slotを設定したslot2↓</p>
         <p>{{number}}</p>
@@ -34,6 +49,13 @@
       <h1>total like number</h1>
       <h2>{{ number }}</h2>
       <p>v-slot:defaultのslot↑</p>
+    </LikeHeader>
+
+    <LikeHeader>
+      <template v-slot:anyNumber="slotProperty">
+        <p>slot property</p>
+        <p>{{ slotProperty }}</p>
+      </template>
     </LikeHeader>
 
     <!-- 親コンポーネントから子にデータを渡すときは子でpropsで定義したプロパティを属性名として親に書く -->
@@ -54,18 +76,24 @@
 // local component
 import HelloWorld from './components/HelloWorld.vue'
 import LikeHeader from './components/LikeHeader.vue';
+import Home from './components/Home.vue';
+import About from './components/About.vue';
 
 export default {
   name: 'App',
   data(){
     return {
       number: 10,
-      testText: 'this is props text defined in Parent by object'
+      testText: 'this is props text defined in Parent by object',
+      // 親コンポーネントにでdataとcomponentタグを用意し、:is属性にdataを渡す
+      currentComponent: "Home"
     }
   },
   components: {
     HelloWorld,
-    LikeHeader // 本来はLikeHeader: LikeHeaderの書き方だが、keyとvalueが同じなら省略して書ける
+    LikeHeader, // 本来はLikeHeader: LikeHeaderの書き方だが、keyとvalueが同じなら省略して書ける
+    Home,
+    About
   },
   methods: {
     // 子から親コンポーネントにデータを渡す時は受け取り役のv-onディレクティブと受け取りメソッドを親に書く
