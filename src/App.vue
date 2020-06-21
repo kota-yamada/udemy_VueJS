@@ -1,5 +1,8 @@
 <template>
   <div>
+    <Vmodel></Vmodel>
+
+
     <!-- 動的コンポーネントの切り替え -->
     <button @click="currentComponent = 'Home'">Home</button>
     <button @click="currentComponent = 'About'">About</button>
@@ -69,6 +72,7 @@
       <img alt="Vue logo" src="./assets/logo.png">
       <HelloWorld msg="Welcome to Your Vue.js App"/>
     </div>
+    
   </div>
 </template>
 
@@ -78,6 +82,8 @@ import HelloWorld from './components/HelloWorld.vue'
 import LikeHeader from './components/LikeHeader.vue';
 import Home from './components/Home.vue';
 import About from './components/About.vue';
+import Vmodel from './components/V_model.vue';
+
 
 export default {
   name: 'App',
@@ -93,7 +99,8 @@ export default {
     HelloWorld,
     LikeHeader, // 本来はLikeHeader: LikeHeaderの書き方だが、keyとvalueが同じなら省略して書ける
     Home,
-    About
+    About,
+    Vmodel
   },
   methods: {
     // 子から親コンポーネントにデータを渡す時は受け取り役のv-onディレクティブと受け取りメソッドを親に書く
