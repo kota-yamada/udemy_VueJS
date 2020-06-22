@@ -1,7 +1,9 @@
 <template>
   <div>
+    <customDirective></customDirective>
     <Vmodel></Vmodel>
-
+    <!-- componentでv-modelを使う場合 -->
+    <useVmodelInCompo v-model="compoVModel.title"></useVmodelInCompo>
 
     <!-- 動的コンポーネントの切り替え -->
     <button @click="currentComponent = 'Home'">Home</button>
@@ -83,6 +85,9 @@ import LikeHeader from './components/LikeHeader.vue';
 import Home from './components/Home.vue';
 import About from './components/About.vue';
 import Vmodel from './components/V_model.vue';
+import useVmodelInCompo from './components/ComponentForVModel.vue';
+import customDirective from './components/CustomDirective.vue';
+
 
 
 export default {
@@ -92,7 +97,11 @@ export default {
       number: 10,
       testText: 'this is props text defined in Parent by object',
       // 親コンポーネントにでdataとcomponentタグを用意し、:is属性にdataを渡す
-      currentComponent: "Home"
+      currentComponent: "Home",
+      // コンポーネントでv-modelを使うには親から子にデータを渡すpropsを子コンポーネントに書く、親コンポーネントのdataに初期値を書く
+      compoVModel: {
+        title: ""
+      }
     }
   },
   components: {
@@ -100,7 +109,9 @@ export default {
     LikeHeader, // 本来はLikeHeader: LikeHeaderの書き方だが、keyとvalueが同じなら省略して書ける
     Home,
     About,
-    Vmodel
+    Vmodel,
+    useVmodelInCompo,
+    customDirective
   },
   methods: {
     // 子から親コンポーネントにデータを渡す時は受け取り役のv-onディレクティブと受け取りメソッドを親に書く
