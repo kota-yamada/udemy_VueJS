@@ -1,5 +1,5 @@
 <template>
-    <!-- カスタムディレクテティブ名:引数.修飾子="object" -->
+    <!--カスタムディレクテティブ名:引数.修飾子="object" -->
     <p v-border:solid.round.shadow="{width: '3px', borderColor: 'black', color: 'red'}">cutom directive</p>
 </template>
 
