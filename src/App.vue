@@ -1,5 +1,7 @@
 <template>
   <div>
+    <filterMixIn></filterMixIn>
+
     <customDirective></customDirective>
     <Vmodel></Vmodel>
     <!-- componentでv-modelを使う場合 -->
@@ -87,8 +89,7 @@ import About from './components/About.vue';
 import Vmodel from './components/V_model.vue';
 import useVmodelInCompo from './components/ComponentForVModel.vue';
 import customDirective from './components/CustomDirective.vue';
-
-
+import filterMixIn from './components/FilterMixIn.vue';
 
 export default {
   name: 'App',
@@ -111,7 +112,8 @@ export default {
     About,
     Vmodel,
     useVmodelInCompo,
-    customDirective
+    customDirective,
+    filterMixIn
   },
   methods: {
     // 子から親コンポーネントにデータを渡す時は受け取り役のv-onディレクティブと受け取りメソッドを親に書く
