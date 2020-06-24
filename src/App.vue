@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Transition></Transition>
     <filterMixIn></filterMixIn>
 
     <customDirective></customDirective>
@@ -90,6 +91,8 @@ import Vmodel from './components/V_model.vue';
 import useVmodelInCompo from './components/ComponentForVModel.vue';
 import customDirective from './components/CustomDirective.vue';
 import filterMixIn from './components/FilterMixIn.vue';
+import Transition from './components/Transition.vue';
+
 
 export default {
   name: 'App',
@@ -113,7 +116,8 @@ export default {
     Vmodel,
     useVmodelInCompo,
     customDirective,
-    filterMixIn
+    filterMixIn,
+    Transition
   },
   methods: {
     // 子から親コンポーネントにデータを渡す時は受け取り役のv-onディレクティブと受け取りメソッドを親に書く
