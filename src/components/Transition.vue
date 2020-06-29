@@ -29,16 +29,84 @@
                 <p>custom transition class</p>
             </div>
         </transition>
+
+        <br>
+        <!-- name属性を動的に変更し動的transitionを作る -->
+        <button @click="myAnimation = 'slide'">slide</button>
+        <button @click="myAnimation = 'fade'">fade</button>
+        <p>{{myAnimation}}</p>
+        <!-- 複数の要素が切り替わるtransitionでは消える要素と現れる要素が同じタイミングで消える/現れる。ので、mode属性でタイミングをずらす。普通使われるのはout-inで、消えてから現れる。in-outが現れてから消える。 -->
+        <transition :name="myAnimation" appear mode="out-in">
+            <!-- v-ifなどで要素を切り替える時に切り替えるタグが同じ場合はその中身のみ書き換わるので、属性で設定されているtransition/animationが効かない。そのため、key属性をつけて同じタグでもタグごと書き換わるようにする -->
+            <p v-if="show" key="A">name属性を動的に変更し動的transitionを作る</p>
+            <p v-else key="B">複数の要素を切り替える</p>
+        </transition>
+
+        <br>
+        <!-- 動的コンポーネントのtransition -->
+        <button @click="myComponent = 'ComponentA'">component A</button>
+        <button @click="myComponent = 'ComponentB'">component B</button>
+        <transition :name="myAnimation" mode="out-in" appear>
+            <component :is="myComponent"></component>
+        </transition>
+
+        <br>
+        <!-- JavaScriptでアニメーションを作る -->
+        <!-- :css="false"でCSSアニメーションを適用しないようにする。v-bind:css -->
+        <transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @enter-cancelled="enterCancelled" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave" @leave-cancelled="leaveCancelled">
+            <div class="circle" v-if="show"></div>
+        </transition>
     </div>
 </template>
 
 <script>
+import ComponentA from './ComponentA';
+import ComponentB from './ComponentB';
+
 export default {
+    components: {
+        ComponentA,
+        ComponentB
+    },
     data() {
         return {
             show: true,
+            myAnimation: "slide",
+            myComponent: 'ComponentA'
         }
-    }
+    },
+    // methods: {
+    //     // JavaScriptでアニメーションを作る
+    //     // JavaScriptフック
+    //     // elでDOM要素を対象として変更を加える
+    //     beforeEnter(el) {
+    //         // 現れる前
+    //     },
+    //     enter(el, done) {
+    //         // 現れる時
+    //         // アニメーションが終わった時を示すの第二引数done関数。非同期処理に使う。CSSアニメーションも設定されている時は設定しなくてもOK。doneをつけるとCSSアニメーション時間が残っていてもアニメーションを終了させる。
+    //     },
+    //     afterEnter(el) {
+    //         // 現れた後
+    //     },
+    //     enterCancelled(el) {
+    //         // 現れるアニメーションがキャンセルされた時
+    //     },
+    //     beforeLeave(el) {
+    //         // 消える前
+    //     },
+    //     leave(el, done) {
+    //         // 消える時
+    //         // アニメーションが終わった時を示すの第二引数done関数。非同期処理に使う。CSSアニメーションも設定されている時は設定しなくてもOK。doneをつけるとCSSアニメーション時間が残っていてもアニメーションを終了させる。
+    //     },
+    //     afterLeave(el) {
+    //         // 消えた後
+    //     },
+    //     leaveCancelled(el) {
+    //         // 消えるアニメーションがキャンセルされた時
+    //         // v-showと一緒に使う時だけ有効
+    //     }
+    // }
 }
 </script>
 
@@ -102,6 +170,15 @@ export default {
 .fadeSlide-leave-active {
     animation: slide-in 0.5s reverse;
     transition: opacity 1s;
+}
+
+
+.circle {
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    border-radius: 100px;
+    background-color: blue;
 }
 
 
