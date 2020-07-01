@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import router from './router.js'
 
 // global component
 // import
@@ -30,5 +31,7 @@ Vue.filter("upperCase", function(value) {
 
 
 new Vue({
+  // router: router,
+  router,
   render: h => h(App),
 }).$mount('#app')
