@@ -54,7 +54,7 @@ export default {
         //     this.$store.dispatch("decrement", 1);
         // }
         // mapGettersのactioins版mapActions
-        ...mapActions(["increment", "decrement"])
+        ...mapActions("count", ["increment", "decrement"])
     }
 }
 </script>

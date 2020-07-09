@@ -6,6 +6,11 @@
         <p>Count : {{ count }}</p>
         <p>doubleCount : {{ doubleCount }}</p>
         <p>tripleCount :{{ tripleCount }}</p>
+        <!-- data入力方法1つ目 -->
+        <input type="text" :value="message" @input="updateMessage">
+        <!-- data入力方法2つ目 -->
+        <input type="text" v-model="message">
+        <p>{{ message }}</p>
     </div>
 </template>
 
@@ -30,6 +35,11 @@ export default {
             this.$router.push({
                 name: "users-list",
             });
+        },
+
+        // data入力方法1つ目
+        updateMessage(e){
+            this.$store.dispatch("updateMessage", e.target.value)
         }
     },
     // Vuexのstore.jsにアクセスする時はcomputed
@@ -47,13 +57,31 @@ export default {
         // }
         
         // 上記のthis.$store.gettersをまとめられる
-        ...mapGetters(["doubleCount", "tripleCount"]),
+        ...mapGetters(["message"]),
+        // 名前空間を設定したら関数を書いているファイル名を第1引数にとる
+        ...mapGetters("count", ["doubleCount", "tripleCount"]),
+        // 名前空間を設定した場合の普通の書き方
+        // doubleCount() {
+        //     return this.$store.getters["count/doubleCount"];
+        // }
+
         // オブジェクトの書き方もOK
         // {{keyDoubleCount}}という感じになる
         // ...mapGetters({
         //     keyDoubleCount: "doubleCount",
         //     keyTripleCount: "tripleCount"
         // }),
+
+        // data入力方法2つ目
+        // v-modelでvuexを使う時
+        message: {
+            get() {
+                return this.$store.state.message;
+            },
+            set(value) {
+                this.$store.dispatch("updateMessage", value)
+            }
+        }
 
     }
 }

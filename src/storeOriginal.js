@@ -8,6 +8,7 @@ export default new Vuex.Store({
     // データの予測と追跡に注意必要
     state:{
         count: 2,
+        message: ""
     },
     // Vuex用の算出プロパティ(computed プロパティ)がgetter
     // いろんなコンポーネントで使いたい式、関数をgettersにまとめておける
@@ -18,6 +19,7 @@ export default new Vuex.Store({
         // アロー関数でもOK。第1引数でstateオブジェクトをとれる。
         // アロー関数はreturnを省略できるのでgettersと相性がいい
         tripleCount: state => state.count *3,
+        message: state => state.message
     },
     // データの内容（stateの内容）を変えられる場所を制限して、データの予測性や追跡性を高めるmutations
     // 基本的にはここの中でのみ、データの内容（stateの内容）を変える
@@ -30,6 +32,9 @@ export default new Vuex.Store({
         decrement(state, number) {
             state.count -= number;
         },
+        updateMessage(state, newMessage) {
+            state.message = newMessage;
+        }
     },
     // mutaionsにかけない非同期処理はactionsに書く
     // 同期処理書いてもOK
@@ -41,5 +46,8 @@ export default new Vuex.Store({
         decrement({ commit }, number) {
             commit('decrement', number);
         },
+        updateMessage({ commit }, newMessage) {
+            commit('updateMessage', newMessage);
+        }
     }  
 })
